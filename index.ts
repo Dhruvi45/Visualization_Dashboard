@@ -1,11 +1,25 @@
-import express from "express";
+import connectDB from './db';
+import DataModel from './dataModal';
+import express, { Request, Response } from 'express';
+import dataRoutes from './dataModalRouter';
+import userRoutes from "./userModalRouter"
+
 const app = express();
-const port = 3000;
+const cors = require("cors");
+// Connect to database
+connectDB();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello CodeSandbox!");
+  res.send("Hello, Express!");
 });
 
-app.listen(port, () => {
-  console.log(`Sandbox listening on port ${port}`);
-});
+app.use(dataRoutes)
+app.use(userRoutes)
+
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
